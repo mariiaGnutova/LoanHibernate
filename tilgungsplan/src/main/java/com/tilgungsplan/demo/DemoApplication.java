@@ -2,8 +2,6 @@ package com.tilgungsplan.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-
 
 @SpringBootApplication
 public class DemoApplication {
@@ -13,4 +11,6 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 
 	}
+
+
 }

@@ -1,8 +1,9 @@
 package com.tilgungsplan.demo.services;
 
 import com.tilgungsplan.demo.entity.RepaymentDO;
+import org.springframework.web.bind.annotation.RequestParam;
+import javax.persistence.EntityExistsException;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface PaymentService {
@@ -14,4 +15,5 @@ public interface PaymentService {
 	long getLastInsertedId();
 	List<RepaymentDO> findall();
 	String getURLDB();
+	List<RepaymentDO> calculatePaymentPlan(@RequestParam double loanValue) throws EntityExistsException;
 }

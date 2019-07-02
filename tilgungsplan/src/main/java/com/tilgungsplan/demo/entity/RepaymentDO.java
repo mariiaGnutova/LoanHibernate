@@ -1,7 +1,7 @@
 package com.tilgungsplan.demo.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Loan")  // TILGUNGSPLAN
@@ -15,11 +15,10 @@ public class RepaymentDO {  // TildungDO
 //    @Temporal(TemporalType.DATE)
 //    @Column(nullable = false)
 //    private Date date;  // datum
- @Basic
- @Temporal(TemporalType.DATE)
-  private Date date;
+    @Column(name="date", nullable = false)
+  private LocalDateTime date;
 
-    @Column(name="Debt")
+    @Column(name="remainingdebt", nullable = false)
     private double remainingDebt;  // Restschuld
 
     @Column(name="interest")
@@ -39,11 +38,11 @@ public class RepaymentDO {  // TildungDO
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }  // getDatum
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }  // setDatum
 
@@ -79,7 +78,7 @@ public class RepaymentDO {  // TildungDO
         this.rate = rate;
     }
 
-    public RepaymentDO(Date date, double remainingDebt, double interest, double repayment, double rate) {
+    public RepaymentDO(LocalDateTime date, double remainingDebt, double interest, double repayment, double rate) {
         this.date = date;
         this.remainingDebt = remainingDebt;
         this.interest = interest;

@@ -8,10 +8,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
+
 import java.math.BigInteger;
 
 import java.util.List;
 
+@Repository
 public class RepaymentDAOImpl implements RepaymentDAO {
 
 	@Override

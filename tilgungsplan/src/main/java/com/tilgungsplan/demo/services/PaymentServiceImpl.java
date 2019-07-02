@@ -3,18 +3,22 @@ package com.tilgungsplan.demo.services;
 import com.tilgungsplan.demo.dataAccessObject.RepaymentDAO;
 import com.tilgungsplan.demo.dataAccessObject.RepaymentDAOImpl;
 import com.tilgungsplan.demo.entity.RepaymentDO;
+import com.tilgungsplan.demo.init.DataInit;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.SessionFactoryImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class PaymentServiceImpl implements PaymentService {
 
 	private RepaymentDAO repaymentDAO = new RepaymentDAOImpl();
-	public PaymentServiceImpl(){}
 
 	@Override
 	public double getSumRate() {
@@ -63,5 +67,20 @@ public class PaymentServiceImpl implements PaymentService {
 		String[] urlArray = url.split(":");
 		String db_name = urlArray[urlArray.length - 1];
 		return db_name;
+	}
+
+	@Override
+	public List<RepaymentDO> calculatePaymentPlan(@RequestParam double loanValue)  throws EntityExistsException {
+		try
+		{
+			DataInit dataInit = new DataInit();
+			dataInit.createPaymentPlan(loanValue);
+		}
+		catch (Exception e)
+		{
+			throw new EntityExistsException(e.getMessage());
+		}
+
+		return repaymentDAO.findall();
 	}
 }
