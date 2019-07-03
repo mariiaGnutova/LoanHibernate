@@ -8,26 +8,21 @@ import java.time.LocalDateTime;
 public class RepaymentDO {  // TildungDO
 
     @Id
-    @GeneratedValue //(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private long id;
 
 //    @Temporal(TemporalType.DATE)
-//    @Column(nullable = false)
 //    private Date date;  // datum
-    @Column(name="date", nullable = false)
+
   private LocalDateTime date;
 
-    @Column(name="remainingdebt", nullable = false)
     private double remainingDebt;  // Restschuld
 
-    @Column(name="interest")
     private double interest;  // Zinsen
 
-    @Column(name="repayment")
     private double repayment;  // Tildung
 
-    @Column(name="rate")
     private double rate;
 
     public long getId() {
@@ -87,6 +82,18 @@ public class RepaymentDO {  // TildungDO
     }
 
     public RepaymentDO(){}
+
+    @Override
+    public String toString() {
+        return "RepaymentDO{" +
+                "id=" + id +
+                ", date=" + date +
+                ", remainingDebt=" + remainingDebt +
+                ", interest=" + interest +
+                ", repayment=" + repayment +
+                ", rate=" + rate +
+                '}';
+    }
 }
 
 

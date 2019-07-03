@@ -38,13 +38,13 @@ public class DataInit {
     }
 
     public void tableEntry(){
-        int a = 0;
+        int a = -1;
         try {
             RepaymentDO repaymentDO = new RepaymentDO(date, remainingDebt, interest, repayment, rate);
+            a = 0;
             paymentService.saveRepaymentDO(repaymentDO);
             a = 1;
-            interest = Math.round(remainingDebt*-1*debitInterest/12
-                    * 100.0) / 100.0;
+            interest = Math.round(remainingDebt*-1*debitInterest/12 * 100.0) / 100.0;
             a = 2;
             repayment = Math.round((rate - interest +1) * 100.0) / 100.0 ;
             a = 3;
@@ -55,16 +55,4 @@ public class DataInit {
             System.out.println("Crash on Step :" + a);
         }
     }
-//    public double getLoanValue() {
-//        Scanner in = new Scanner(System.in);
-//        String s;
-//        do {
-//            System.out.print("\n\nDer Darlehensbetrag: ");
-//            s = in.nextLine();
-//        }
-//        while (!s.matches("\\d*"));
-//
-//        return Double.parseDouble(s);
-//    }
-
 }

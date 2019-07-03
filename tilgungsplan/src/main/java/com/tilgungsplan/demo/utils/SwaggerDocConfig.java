@@ -43,8 +43,8 @@ public class SwaggerDocConfig implements WebMvcConfigurer {
 //                .apiInfo(generateApiInfo());
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("guru.springframework.controllers"))
-                .paths(regex("/product.*"))
+                .apis(RequestHandlerSelectors.basePackage("com.tilgungsplan.demo.controller"))
+                .paths(regex("/.*"))
                 .build()
                 .apiInfo(generateApiInfo());
     }

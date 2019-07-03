@@ -7,11 +7,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.springframework.context.annotation.Bean;
 
 public class HibernateSessionFactoryUtil {
 	private static SessionFactory sessionFactory;
 
 	private HibernateSessionFactoryUtil() {}
+
 
 	public static SessionFactory getSessionFactory() {
 		if (sessionFactory == null) {

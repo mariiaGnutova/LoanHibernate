@@ -7,7 +7,9 @@ import com.tilgungsplan.demo.init.DataInit;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.SessionFactoryImpl;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -17,23 +19,11 @@ import java.util.Map;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
-
 	private RepaymentDAO repaymentDAO = new RepaymentDAOImpl();
 
-	@Override
-	public double getSumRate() {
-		return repaymentDAO.getSumRate();
-	}
-
-	@Override
-	public double getSumInterest() {
-		return repaymentDAO.getSumInterest();
-	}
-
-	@Override
-	public double getRepayment() {
-		return repaymentDAO.getRepayment();
-	}
+//	public void setRepaymentDAO(RepaymentDAO repaymentDAO){
+//		this.repaymentDAO = repaymentDAO;
+//	}
 
 	@Override
 	public RepaymentDO findById(long id) {
@@ -44,11 +34,13 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
+	@Transactional
 	public void saveRepaymentDO(RepaymentDO repaymentDO) {
 		repaymentDAO.saveRepaymentDO(repaymentDO);
 	}
 
 	@Override
+	@Transactional
 	public long getLastInsertedId() {
 		return repaymentDAO.getLastInsertedId();
 	}
@@ -74,13 +66,12 @@ public class PaymentServiceImpl implements PaymentService {
 		try
 		{
 			DataInit dataInit = new DataInit();
-			dataInit.createPaymentPlan(loanValue);
+			dataInit.createPaymentPlan((double)loanValue);
 		}
 		catch (Exception e)
 		{
 			throw new EntityExistsException(e.getMessage());
 		}
-
 		return repaymentDAO.findall();
 	}
 }

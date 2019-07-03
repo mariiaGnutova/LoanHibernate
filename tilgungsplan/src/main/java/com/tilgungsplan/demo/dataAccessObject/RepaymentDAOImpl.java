@@ -17,26 +17,7 @@ import java.util.List;
 @Repository
 public class RepaymentDAOImpl implements RepaymentDAO {
 
-	@Override
-	public double getSumRate() {
-		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-		return (double) session.createQuery("SELECT ROUND(SUM(RATE),2) FROM LOAN WHERE ID>1")
-				.getSingleResult();
-	}
 
-	@Override
-	public double getSumInterest() {
-		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-		return (double)session.createQuery("SELECT ROUND(SUM(Interest),2) FROM LOAN")
-				.getSingleResult();
-	}
-
-	@Override
-	public double getRepayment() {
-		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-		return (double)session.createQuery("SELECT ROUND(SUM (Repayment) ,2) FROM LOAN WHERE ID>1")
-				.getSingleResult();
-	}
 
 	@Override
 	public RepaymentDO findById(long id) {
