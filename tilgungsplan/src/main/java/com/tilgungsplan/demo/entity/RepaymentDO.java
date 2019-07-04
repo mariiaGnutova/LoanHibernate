@@ -12,11 +12,9 @@ public class RepaymentDO {  // TildungDO
 
     private long id;
 
-//    @Temporal(TemporalType.DATE)
-//    private Date date;  // datum
+    private LocalDateTime date;
 
-  private LocalDateTime date;
-
+   // @Column(name = "remainingdebt")
     private double remainingDebt;  // Restschuld
 
     private double interest;  // Zinsen

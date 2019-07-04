@@ -66,7 +66,7 @@ public class RepaymentDAOImpl implements RepaymentDAO {
 		Session session = null;
 		try {
 			session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-		//	payments = (List<RepaymentDO>)session.createQuery("FROM LOAN").list();
+	//		payments = (List<RepaymentDO>)session.createQuery("FROM LOAN").list();
 			CriteriaBuilder builder = session.getCriteriaBuilder();
 			CriteriaQuery<RepaymentDO> criteria = builder.createQuery(RepaymentDO.class);
 			criteria.from(RepaymentDO.class);

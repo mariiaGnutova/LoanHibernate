@@ -27,6 +27,7 @@ public class RepaymentMapper {
                 .setRepayment(repaymentDO.getRepayment());
               repaymentDTOBuilder.setInterest(repaymentDO.getInterest());
         repaymentDTOBuilder.setRemainingDebt(repaymentDO.getRemainingDebt());
+        repaymentDTOBuilder.setRate(repaymentDO.getRate());
         return repaymentDTOBuilder.createRepaymentDTO();
     }
 
