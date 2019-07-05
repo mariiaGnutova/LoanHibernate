@@ -39,15 +39,18 @@ public class ControllerRepayment {
 
     private PaymentService paymentService = new PaymentServiceImpl();
 
-//    @ResponseBody
-//    @RequestMapping(value = "/index", method = RequestMethod.GET)
-//    public String index(){
-//        List<RepaymentDO> all = paymentService.findall();
-//        StringBuilder output = new StringBuilder();
-//        all.forEach(p -> output.append(p.getDate() + "<br>"));
-//        return output.toString();
-//    }
-
+    @ResponseBody
+    @RequestMapping(value = "/paymentsTable", method = RequestMethod.GET)
+    public List<RepaymentDTO> index(){
+        return RepaymentMapper.makeRepaymentDTOList(paymentService.findall());
+    }
+    @RequestMapping(value = "/getPaymentsInCertainMonth", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public RepaymentDO getPaymentsInCertainMonth (@RequestParam (value = "Date ") String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        LocalDateTime parsedDate = LocalDateTime.parse(date, formatter);
+        return paymentService.findByDate(parsedDate);
+    }
 
 
     @RequestMapping(value = "/getPayments", method = RequestMethod.POST)
@@ -58,11 +61,12 @@ public class ControllerRepayment {
 //                                               @RequestParam (value = "rate")  double rate,
 //                                               @RequestParam (value = "date") String startDate) throws EntityExistsException, ParseException {
 
-    public  List<RepaymentDTO> createRepayment(@Valid @RequestParam (value = "loanValue") double loanValue) throws EntityExistsException, ParseException {
+    public List<RepaymentDTO>  createRepayment(@Valid @RequestParam (value = "loanValue") double loanValue,
+                                               @RequestParam (value = "date") String startDate) throws EntityExistsException, ParseException {
+        //"2015-10-12T08:15:16"
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        LocalDateTime parsedDate = LocalDateTime.parse("2015-10-12T08:15:16", formatter);
-        return RepaymentMapper.makeRepaymentDTOList(paymentService.calculatePaymentPlan(loanValue));
-      //  return null;
-                //parsedDate, remainingDebt, interest, repayment, rate));
+        LocalDateTime parsedDate = LocalDateTime.parse(startDate, formatter);
+      return RepaymentMapper.makeRepaymentDTOList(paymentService.calculatePaymentPlan(loanValue, parsedDate));
+      //parsedDate, remainingDebt, interest, repayment, rate));
     }
 }

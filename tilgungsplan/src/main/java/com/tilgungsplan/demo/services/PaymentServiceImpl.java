@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 import javax.persistence.EntityExistsException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +22,6 @@ import java.util.Map;
 public class PaymentServiceImpl implements PaymentService {
 	private RepaymentDAO repaymentDAO = new RepaymentDAOImpl();
 
-//	public void setRepaymentDAO(RepaymentDAO repaymentDAO){
-//		this.repaymentDAO = repaymentDAO;
-//	}
 
 	@Override
 	public RepaymentDO findById(long id) {
@@ -31,6 +29,14 @@ public class PaymentServiceImpl implements PaymentService {
 			System.out.println("Payment '" + id + "' can't be found");
 		}
 		return repaymentDAO.findById(id);
+	}
+
+	@Override
+	public RepaymentDO findByDate(LocalDateTime dateTime) {
+		if (repaymentDAO.findByDate(dateTime) == null){
+			System.out.println("Payment on date '" + dateTime + "' can't be found");
+		}
+		return repaymentDAO.findByDate(dateTime);
 	}
 
 	@Override
@@ -62,11 +68,11 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public List<RepaymentDO> calculatePaymentPlan(@RequestParam double loanValue)  throws EntityExistsException {
+	public List<RepaymentDO> calculatePaymentPlan(@RequestParam double loanValue, @RequestParam LocalDateTime date)  throws EntityExistsException {
 		try
 		{
 			DataInit dataInit = new DataInit();
-			dataInit.createPaymentPlan((double)loanValue);
+			dataInit.createPaymentPlan((double)loanValue, date);
 		}
 		catch (Exception e)
 		{

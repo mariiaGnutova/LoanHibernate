@@ -5,12 +5,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.persistence.EntityExistsException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 public interface PaymentService {
-	public RepaymentDO findById(long id);
-	public void saveRepaymentDO(RepaymentDO repaymentDO);
-	public long getLastInsertedId();
-	public List<RepaymentDO> findall();
-	public String getURLDB();
-	public List<RepaymentDO> calculatePaymentPlan(@RequestParam double loanValue) throws EntityExistsException;
+	RepaymentDO findById(long id);
+	RepaymentDO findByDate(LocalDateTime dateTime);
+	void saveRepaymentDO(RepaymentDO repaymentDO);
+	long getLastInsertedId();
+	List<RepaymentDO> findall();
+	String getURLDB();
+	List<RepaymentDO> calculatePaymentPlan(@RequestParam double loanValue, @RequestParam LocalDateTime date) throws EntityExistsException;
 }

@@ -13,20 +13,20 @@ public class DataInit {
     public void DataInit(){}
     private PaymentService paymentService;
     private double interest;
-    private LocalDateTime date;
+    private LocalDateTime dateToTable;
     private double rate;
     private double remainingDebt;
     private double repayment;
     private double debitInterest;
 
 
-    public void createPaymentPlan(double loanValue) throws Exception {
+    public void createPaymentPlan(double loanValue, LocalDateTime date) throws Exception {
         paymentService = new PaymentServiceImpl();
         debitInterest = 0.0212;  // 2.12%
         double initialRepayment = 0.02;  //2%
         loanValue = loanValue *-1;
         interest = 0;
-        date = LocalDateTime.parse("2015-12-03T10:15:30");
+        dateToTable = date;
         rate = Math.round(loanValue*-1*(initialRepayment + debitInterest)/12 * 100.0) / 100.0;
         remainingDebt = loanValue;
         repayment = loanValue;
@@ -40,7 +40,7 @@ public class DataInit {
     public void tableEntry(){
         int a = -1;
         try {
-            RepaymentDO repaymentDO = new RepaymentDO(date, remainingDebt, interest, repayment, rate);
+            RepaymentDO repaymentDO = new RepaymentDO(dateToTable, remainingDebt, interest, repayment, rate);
             a = 0;
             paymentService.saveRepaymentDO(repaymentDO);
             a = 1;
@@ -50,7 +50,7 @@ public class DataInit {
             a = 3;
             remainingDebt = Math.round((remainingDebt + repayment) * 100.0) / 100.0;
             a = 4;
-            date = date.plusMonths(1);
+            dateToTable = dateToTable.plusMonths(1);
         } catch (Exception e) {
             System.out.println("Crash on Step :" + a);
         }
