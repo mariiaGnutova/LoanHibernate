@@ -25,8 +25,10 @@
         <property name="hibernate.show_sql">true</property>
 
         <!-- Drop and re-create the database schema on startup -->
-     <!--   <property name="hbm2ddl.auto">create-drop</property> -->
+<!--        <property name="hbm2ddl.auto">create-drop</property>-->
         <property name="hibernate.hbm2ddl.auto">update</property>
+
+<!--        <property name="hibernate.allow_update_outside_transaction=true">true</property>-->
 
         <mapping class="com.tilgungsplan.demo.entity.RepaymentDO"/>
 

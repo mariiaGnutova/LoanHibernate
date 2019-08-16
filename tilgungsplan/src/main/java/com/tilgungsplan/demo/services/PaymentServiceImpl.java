@@ -80,4 +80,9 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 		return repaymentDAO.findall();
 	}
+
+	@Override
+	public boolean deletOldCulculations() {
+		return repaymentDAO.deleteOldCulculations();
+	}
 }

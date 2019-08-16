@@ -12,5 +12,6 @@ public interface RepaymentDAO {
 	void saveRepaymentDO(RepaymentDO repaymentDO);
 	long getLastInsertedId();
 	List<RepaymentDO> findall();
+	boolean deleteOldCulculations();
 
 }

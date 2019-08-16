@@ -15,4 +15,5 @@ public interface PaymentService {
 	List<RepaymentDO> findall();
 	String getURLDB();
 	List<RepaymentDO> calculatePaymentPlan(@RequestParam double loanValue, @RequestParam LocalDateTime date) throws EntityExistsException;
+	boolean deletOldCulculations();
 }

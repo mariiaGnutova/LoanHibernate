@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import springfox.documentation.builders.PathSelectors;
+
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
@@ -20,9 +20,6 @@ public class SwaggerDocConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 
-       // registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-
-
         registry
                 .addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
@@ -33,14 +30,7 @@ public class SwaggerDocConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public Docket docket()
-    {
-//        return new Docket(DocumentationType.SWAGGER_2)
-//                .select()
-//                .apis(RequestHandlerSelectors.basePackage(getClass().getPackage().getName()))
-//                .paths(PathSelectors.any())
-//                .build()
-//                .apiInfo(generateApiInfo());
+    public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tilgungsplan.demo.controller"))
@@ -48,8 +38,8 @@ public class SwaggerDocConfig implements WebMvcConfigurer {
                 .build()
                 .apiInfo(generateApiInfo());
     }
-    private ApiInfo generateApiInfo()
-    {
+
+    private ApiInfo generateApiInfo() {
         return new ApiInfo("Plan Generator Server Applicant Test Service", "This service is to inform borrowers about the final repayment schedule" +
                 "throughout the lifetime of a loan.", "Version 1.0 ",
                 "urn:tos", "gnutovamaria85@gmail.com", "", "");
