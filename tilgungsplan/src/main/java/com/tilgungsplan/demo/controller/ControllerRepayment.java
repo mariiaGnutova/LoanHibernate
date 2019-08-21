@@ -37,8 +37,8 @@ public class ControllerRepayment {
 
     @ResponseBody
     @RequestMapping(value = "/paymentsTable", method = RequestMethod.GET)
-    public List<RepaymentDTO> index(){
-        return RepaymentMapper.makeRepaymentDTOList(paymentService.findall());
+    public List<RepaymentDTO> index(@RequestParam (value = "userId") long userId){
+        return RepaymentMapper.makeRepaymentDTOList(paymentService.findallForUser(userId));
     }
 
 //    @RequestMapping(value = "/getPaymentsInCertainMonth", method = RequestMethod.GET)
@@ -46,10 +46,10 @@ public class ControllerRepayment {
 //    public RepaymentDO getPaymentsInCertainMonth (@RequestParam (value = "Date ") String date){
 
     @GetMapping("/getPaymentsInCertainMonth/{date}")
-    public RepaymentDO getPaymentsInCertainMonth (@PathVariable(value = "date") String date){
+    public RepaymentDO getPaymentsInCertainMonth (@PathVariable(value = "date") String date, @RequestParam (value = "userId") long userId){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         LocalDateTime parsedDate = LocalDateTime.parse(date, formatter);
-        return paymentService.findByDate(parsedDate);
+        return paymentService.findByDate(parsedDate, userId);
     }
 
     @RequestMapping(value = "/getPayments", method = RequestMethod.POST)
@@ -66,11 +66,11 @@ public class ControllerRepayment {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         LocalDateTime parsedDate = LocalDateTime.parse(startDate, formatter);
-      return RepaymentMapper.makeRepaymentDTOList(paymentService.calculatePaymentPlan(loanValue, parsedDate));
+        long userId = paymentService.getLastUserId() + 1;
+      return RepaymentMapper.makeRepaymentDTOList(paymentService.calculatePaymentPlan(loanValue, parsedDate, userId));
       //parsedDate, remainingDebt, interest, repayment, rate));
     }
 
- //   @DeleteMapping("/deleteOldCalculations")
     @RequestMapping(value = "/deleteOldCalculations", method = RequestMethod.DELETE)
     public boolean deleteOldCalculations(){
         return paymentService.deletOldCulculations();

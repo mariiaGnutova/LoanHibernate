@@ -33,22 +33,12 @@ public class RepaymentDAOImpl implements RepaymentDAO {
     }
 
     @Override
-    public RepaymentDO findByDate(LocalDateTime date) {
+    public RepaymentDO findByDate(LocalDateTime date, long userId) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        String stringQuery = "SELECT * FROM LOAN WHERE DATE ='" + date.toString() + "'";
-        Query query = session.createNativeQuery(stringQuery);
-        Object[] obj = (Object[]) query.getResultList().get(0);
-        RepaymentDO repaymentDO = new RepaymentDO();
-        BigInteger idInDataBase = (BigInteger) obj[0];
-        repaymentDO.setId(idInDataBase.longValue());
-        Timestamp dateInDataBase = (Timestamp) obj[1];
-        repaymentDO.setDate(dateInDataBase.toLocalDateTime());
-        repaymentDO.setInterest((double) obj[2]);
-        repaymentDO.setRate((double) obj[3]);
-        repaymentDO.setRemainingDebt((double) obj[4]);
-        repaymentDO.setRepayment((double) obj[5]);
+        String stringQuery = "SELECT * FROM LOAN WHERE DATE ='" + date.toString() + "' AND USERID =" + userId;
+        List<RepaymentDO> paymentsOnDate = session.createNativeQuery(stringQuery, RepaymentDO.class).list();
         session.close();
-        return repaymentDO;
+        return paymentsOnDate.get(0);
     }
 
     @Override
@@ -74,6 +64,19 @@ public class RepaymentDAOImpl implements RepaymentDAO {
         try {
             Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
             lastId = ((BigInteger) session.createSQLQuery("SELECT LAST_INSERT_ID() FROM LOAN").uniqueResult()).longValue();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            return lastId;
+        }
+    }
+
+    @Override
+    public long getLastUserId() {
+        long lastId = 0;
+        try {
+            Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+            lastId = ((BigInteger) session.createSQLQuery("SELECT MAX (USERID) From loan").uniqueResult()).longValue();
             System.out.println("Last Id is: " + lastId);
         } catch (HibernateException e) {
             e.printStackTrace();
@@ -104,16 +107,32 @@ public class RepaymentDAOImpl implements RepaymentDAO {
     }
 
     @Override
+    public List<RepaymentDO> findallForUser(long userId) {
+        List<RepaymentDO> payments = null;
+        Session session = null;
+        try {
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+            payments = session.createNativeQuery("SELECT * FROM LOAN WHERE USERID = " + userId, RepaymentDO.class).list();
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            System.out.println(" Problem to find payment plan for userId: " + userId);
+        } finally {
+            session.close();
+            return payments;
+        }
+    }
+
+    @Override
     public boolean deleteOldCulculations() {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction transObj = session.beginTransaction();
-       String stringQuery = "DELETE FROM LOAN WHERE ID > 0";
+        String stringQuery = "DELETE FROM LOAN WHERE ID > 0";
         Query query = session.createNativeQuery(stringQuery);
         query.executeUpdate();
-      transObj.commit();
+        transObj.commit();
         session.close();
         return findall().isEmpty();
-
     }
 
 }

@@ -12,7 +12,7 @@ public class RepaymentMapper {
 
     public static RepaymentDO makeRepaymentDO(RepaymentDTO repaymentDTO)
     {
-        return new RepaymentDO(repaymentDTO.getDate(),
+        return new RepaymentDO(repaymentDTO.getUserId(), repaymentDTO.getDate(),
                 repaymentDTO.getRemainingDebt(),
                 repaymentDTO.getInterest(),
                 repaymentDTO.getRepayment(),
@@ -23,9 +23,10 @@ public class RepaymentMapper {
     public static RepaymentDTO makeRepaymentDTO(RepaymentDO repaymentDO) {
         RepaymentDTO.RepaymentDTOBuilder repaymentDTOBuilder = RepaymentDTO.newBuilder();
               repaymentDTOBuilder.setId(repaymentDO.getId())
-                .setDate(repaymentDO.getDate())
+                      .setUserId(repaymentDO.getUserId());
+        repaymentDTOBuilder.setDate(repaymentDO.getDate())
                 .setRepayment(repaymentDO.getRepayment());
-              repaymentDTOBuilder.setInterest(repaymentDO.getInterest());
+        repaymentDTOBuilder.setInterest(repaymentDO.getInterest());
         repaymentDTOBuilder.setRemainingDebt(repaymentDO.getRemainingDebt());
         repaymentDTOBuilder.setRate(repaymentDO.getRate());
         return repaymentDTOBuilder.createRepaymentDTO();

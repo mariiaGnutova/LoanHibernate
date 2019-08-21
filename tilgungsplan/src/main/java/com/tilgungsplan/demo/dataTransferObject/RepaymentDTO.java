@@ -12,7 +12,10 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RepaymentDTO {
     @JsonIgnore
-    private Long id;
+    private long id;
+
+    @NotNull(message = "User id can not be null!")
+    private long userId;
 
     @NotNull(message = "Date can not be null!")
     private LocalDateTime date;
@@ -31,14 +34,16 @@ public class RepaymentDTO {
 
     private RepaymentDTO(){}
 
-    public RepaymentDTO(Long id, LocalDateTime date, double remainingDebt, double interest, double repayment, double rate) {
+    public RepaymentDTO(Long id, long userId, LocalDateTime date, double remainingDebt, double interest, double repayment, double rate) {
         this.id = id;
+        this.userId =userId;
         this.date = date;
         this.remainingDebt = remainingDebt;
         this.interest = interest;
         this.repayment = repayment;
         this.rate = rate;
     }
+
 
     public static RepaymentDTOBuilder newBuilder()
     {
@@ -48,6 +53,11 @@ public class RepaymentDTO {
     @JsonProperty
     public Long getId() {
         return id;
+    }
+
+
+    public long getUserId() {
+        return userId;
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
@@ -73,6 +83,7 @@ public class RepaymentDTO {
 
     public static class RepaymentDTOBuilder{
         private long id;
+        private long userId;
         private LocalDateTime date;
         private double remainingDebt;
         private double interest;
@@ -87,6 +98,10 @@ public class RepaymentDTO {
         public RepaymentDTOBuilder setDate(LocalDateTime date){
             this.date = date;
             return this;
+        }
+
+        public void setUserId(long userId) {
+            this.userId = userId;
         }
 
         public void setRemainingDebt(double remainingDebt) {
@@ -107,7 +122,7 @@ public class RepaymentDTO {
 
         public RepaymentDTO createRepaymentDTO()
         {
-            return new RepaymentDTO(id, date,remainingDebt,interest, repayment, rate);
+            return new RepaymentDTO(id, userId, date,remainingDebt,interest, repayment, rate);
         }
 
     }

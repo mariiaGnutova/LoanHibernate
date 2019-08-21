@@ -12,6 +12,7 @@ public class DataInit {
 
     public void DataInit(){}
     private PaymentService paymentService;
+    private long userId;
     private double interest;
     private LocalDateTime dateToTable;
     private double rate;
@@ -20,7 +21,8 @@ public class DataInit {
     private double debitInterest;
 
 
-    public void createPaymentPlan(double loanValue, LocalDateTime date) throws Exception {
+    public void createPaymentPlan(long customerId, double loanValue, LocalDateTime date) throws Exception {
+        userId = customerId;
         paymentService = new PaymentServiceImpl();
         debitInterest = 0.0212;  // 2.12%
         double initialRepayment = 0.02;  //2%
@@ -40,7 +42,7 @@ public class DataInit {
     public void tableEntry(){
         int a = -1;
         try {
-            RepaymentDO repaymentDO = new RepaymentDO(dateToTable, remainingDebt, interest, repayment, rate);
+            RepaymentDO repaymentDO = new RepaymentDO(userId, dateToTable, remainingDebt, interest, repayment, rate);
             a = 0;
             paymentService.saveRepaymentDO(repaymentDO);
             a = 1;

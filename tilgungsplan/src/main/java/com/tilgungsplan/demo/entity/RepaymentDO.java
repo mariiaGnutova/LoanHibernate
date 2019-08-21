@@ -14,7 +14,6 @@ public class RepaymentDO {  // TildungDO
 
     private LocalDateTime date;
 
-   // @Column(name = "remainingdebt")
     private double remainingDebt;  // Restschuld
 
     private double interest;  // Zinsen
@@ -22,6 +21,12 @@ public class RepaymentDO {  // TildungDO
     private double repayment;  // Tildung
 
     private double rate;
+
+    private long userId;
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public long getId() {
         return id;
@@ -71,12 +76,21 @@ public class RepaymentDO {  // TildungDO
         this.rate = rate;
     }
 
-    public RepaymentDO(LocalDateTime date, double remainingDebt, double interest, double repayment, double rate) {
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public RepaymentDO(long userId, LocalDateTime date, double remainingDebt, double interest, double repayment, double rate) {
         this.date = date;
         this.remainingDebt = remainingDebt;
         this.interest = interest;
         this.repayment = repayment;
         this.rate = rate;
+        this.userId = userId;
     }
 
     public RepaymentDO(){}
@@ -89,7 +103,7 @@ public class RepaymentDO {  // TildungDO
                 ", remainingDebt=" + remainingDebt +
                 ", interest=" + interest +
                 ", repayment=" + repayment +
-                ", rate=" + rate +
+                ", rate=" + rate + ", userId=" + userId +
                 '}';
     }
 }

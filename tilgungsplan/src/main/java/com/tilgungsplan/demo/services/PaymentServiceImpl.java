@@ -32,11 +32,11 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public RepaymentDO findByDate(LocalDateTime dateTime) {
-		if (repaymentDAO.findByDate(dateTime) == null){
+	public RepaymentDO findByDate(LocalDateTime dateTime, long userId) {
+		if (repaymentDAO.findByDate(dateTime, userId) == null){
 			System.out.println("Payment on date '" + dateTime + "' can't be found");
 		}
-		return repaymentDAO.findByDate(dateTime);
+		return repaymentDAO.findByDate(dateTime, userId);
 	}
 
 	@Override
@@ -68,11 +68,11 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public List<RepaymentDO> calculatePaymentPlan(@RequestParam double loanValue, @RequestParam LocalDateTime date)  throws EntityExistsException {
+	public List<RepaymentDO> calculatePaymentPlan(@RequestParam double loanValue, @RequestParam LocalDateTime date, long userId)  throws EntityExistsException {
 		try
 		{
 			DataInit dataInit = new DataInit();
-			dataInit.createPaymentPlan((double)loanValue, date);
+			dataInit.createPaymentPlan(userId, (double)loanValue, date);
 		}
 		catch (Exception e)
 		{
@@ -84,5 +84,15 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public boolean deletOldCulculations() {
 		return repaymentDAO.deleteOldCulculations();
+	}
+
+	@Override
+	public long getLastUserId() {
+		return repaymentDAO.getLastUserId();
+	}
+
+	@Override
+	public List<RepaymentDO> findallForUser(long userId) {
+		return repaymentDAO.findallForUser(userId);
 	}
 }
